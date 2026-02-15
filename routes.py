@@ -137,6 +137,8 @@ def chat():
         intent = analysis.get("intent")
         item_name = analysis.get("item")
         quantity = analysis.get("quantity")
+        language = analysis.get("language")
+
 
         last_item = session.get("last_item")
         product = None
@@ -147,6 +149,9 @@ def chat():
                     product = item
                     session["last_item"] = item["name"]
                     break
+
+        if "available" in msg_lower:
+            intent = "availability"
 
 
         # ---------------- Quantity Follow-up (PRIORITY) ----------------
@@ -225,21 +230,33 @@ def chat():
         if intent == "availability" and product:
             if product["quantity"] > 0:
 
-                session["last_item"] = product["name"]   # 🔥 ADD THIS LINE
+                session["last_item"] = product["name"]
 
                 cursor.close()
                 db.close()
 
-                return {
-                    "assistant": f"Haan, {product['name']} available hai 😊 Kitna lena chahoge?"
-                }, 200
+                if language == "english":
+                    return {
+                        "assistant": f"Yes, {product['name']} is available 😊 How many would you like?"
+                    }, 200
+                else:
+                    return {
+                        "assistant": f"Haan, {product['name']} available hai 😊 Kitna lena chahoge?"
+                    }, 200
+
             else:
                 cursor.close()
                 db.close()
 
-                return {
-                    "assistant": f"Sorry, {product['name']} abhi available nahi hai."
-                }, 200
+                if language == "english":
+                    return {
+                        "assistant": f"Sorry, {product['name']} is not available right now."
+                    }, 200
+                else:
+                    return {
+                        "assistant": f"Sorry, {product['name']} abhi available nahi hai."
+                    }, 200
+
 
 
         
