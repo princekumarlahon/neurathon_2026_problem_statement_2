@@ -113,7 +113,7 @@ ________________________________________
 
 ⚙️ Installation & Setup
 1️⃣ Clone Repository
-git clone https://github.com/princekumarlahon/bharat-biz-agent.git
+git clone https://github.com/princekumarlahon/neurathon_2026_problem_statement_2.git
 cd bharat-biz-agent
 ________________________________________
 
